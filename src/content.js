@@ -42,9 +42,28 @@ function setup() {
   window.addEventListener('keyup', keyboardEventCallback, true)
 }
 
+function refreshHints() {
+  if (state.hints.length) {
+    removeHints(state.hints)
+  }
+
+  findHints()
+
+  if (!state.hints.length) {
+    return
+  }
+
+  renderHints()
+
+  if (state.query) {
+    filterHints()
+  }
+}
+
 function keyboardEventCallback(event) {
   if (!event.repeat) {
     if (event.type === 'keydown') {
+      refreshHints(event)
       handleKeydown(event)
     } else if (event.type === 'keyup') {
       handleKeyup(event)
@@ -218,11 +237,6 @@ function handleQueryKey(event) {
 }
 
 function triggerMatchingHint() {
-  // Stop refreshing before triggering because the triggering could cause a
-  // refresh, for example when triggering a fragment link and the page scrolls,
-  // and that breaks the clean-up when deactivating.
-  state.removeRefreshHintsEventListeners()
-
   const {
     matchingHint: {targetEl},
     openInNewTab,
@@ -267,28 +281,9 @@ function activateHintMode() {
     state.delayedCleanupCallback()
   }
 
-  const refreshHintsHandler = refreshHintsFactory()
-
-  document.addEventListener('scroll', refreshHintsHandler)
-  window.addEventListener('resize', refreshHintsHandler)
-  window.addEventListener('popstate', refreshHintsHandler)
-
-  state.removeRefreshHintsEventListeners = function removeRefreshHintsEventListeners() {
-    document.removeEventListener('scroll', refreshHintsHandler)
-    window.removeEventListener('resize', refreshHintsHandler)
-    window.removeEventListener('popstate', refreshHintsHandler)
-
-    // Removes itself so it can't be called multiple times, and to clean up
-    // memory usage.
-    state.removeRefreshHintsEventListeners = null
-  }
 }
 
 function deactivateHintMode() {
-  if (state.removeRefreshHintsEventListeners) {
-    state.removeRefreshHintsEventListeners()
-  }
-
   // We have to wait for the opacity transition to end before we can
   // clean things up.
   state.delayedCleanupCallback = delayedCleanupFactory()
@@ -418,39 +413,6 @@ function renderHints() {
   cache.containerEl.appendChild(fragment)
 }
 
-function refreshHintsFactory() {
-  function refreshHints() {
-    if (state.hints.length) {
-      removeHints(state.hints)
-    }
-
-    findHints()
-
-    if (!state.hints.length) {
-      return
-    }
-
-    renderHints()
-
-    if (state.query) {
-      filterHints()
-    }
-  }
-
-  return function debouncedRefreshHints(event) {
-    cancelAnimationFrame(state.refreshHintsRAF)
-    state.refreshHintsRAF = requestAnimationFrame(refreshHints)
-
-    // Sometimes the page change is a bit slow and the refresh has happened
-    // before the page changes, so refresh again after a timeout to hopefully
-    // catch those cases.
-    if (event.type === 'popstate') {
-      clearTimeout(state.refreshHintsTimeout)
-      state.refreshHintsTimeout = setTimeout(refreshHints, 350)
-    }
-  }
-}
-
 function delayedCleanupFactory() {
   const {hints} = state
 
@@ -475,6 +437,12 @@ function isElementVisible(el) {
   if (!isRectInViewport(rect)) {
     return false
   }
+
+  const el1 = document.elementFromPoint(rect.left + 1, rect.top + 1) === el
+  const el2 = document.elementFromPoint(rect.left + 1, rect.bottom - 1) === el
+  const el3 = document.elementFromPoint(rect.right - 1, rect.top + 1) === el
+  const el4 = document.elementFromPoint(rect.right - 1, rect.bottom - 1) === el
+  if (!el1 && !el2 && !el3 && !el4) return false
 
   // These overflow values will hide the overflowing child elements.
   const hidingOverflows = ['hidden', 'auto', 'scroll']
