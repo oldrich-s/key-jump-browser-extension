@@ -43,7 +43,7 @@ function setup() {
 }
 
 function keyboardEventCallback(event) {
-  if (!event.repeat && !canElementBeTypedIn(event.target)) {
+  if (!event.repeat) {
     if (event.type === 'keydown') {
       handleKeydown(event)
     } else if (event.type === 'keyup') {

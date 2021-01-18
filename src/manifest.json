@@ -23,10 +23,5 @@
       "js": ["bootstrap-state.js", "content.js"],
       "css": ["content.css"]
     }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "keyjump@kesu.se"
-    }
-  }
+  ]
 }
