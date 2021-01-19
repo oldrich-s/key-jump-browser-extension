@@ -10,18 +10,35 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*", "ftp://*/*"],
+      "matches": [
+        "*://*/*",
+        "ftp://*/*"
+      ],
       "all_frames": false,
       "run_at": "document_start",
-      "js": ["bootstrap-state.js", "content.js"],
-      "css": ["content.css"]
+      "js": [
+        "bootstrap-state.js",
+        "content/activate-hint-mode.js",
+        "content/deactivate-hint-mode.js",
+        "content/filter-hints.js",
+        "content/is-element-visible.js",
+        "content/setup.js",
+        "content/state.js",
+        "content/trigger-matching-hint.js",
+        "content/content.js"
+      ],
+      "css": [
+        "content.css"
+      ]
     }
   ]
 }
