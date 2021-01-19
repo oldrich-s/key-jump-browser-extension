@@ -72,15 +72,11 @@ function findHints() {
             '.gwt-Anchor',
         ].join(','),
     )
-
-    let hintId = 1
-
-    state.hints = []
-
+    
+    let hintId = 0
     for (const el of targetEls) {
         if (!isElementVisible(el)) continue
-
-        state.hints.push({ id: String(hintId), targetEl: el })
+        state.hints.push({ id: allowedChars[hintId], targetEl: el })
         hintId++
     }
 }
@@ -91,6 +87,7 @@ function redrawHints() {
     for (const { hintEl } of state.hints) {
         hintEl.parentNode.removeChild(hintEl)
     }
+    state.hints = []
 
     findHints()
 
@@ -99,7 +96,5 @@ function redrawHints() {
 
     renderHints()
 
-    if (state.query) filterHints()
-    
     state.renderCache.containerEl.classList.add(classNames.active)
 }

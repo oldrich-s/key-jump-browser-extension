@@ -11,8 +11,9 @@ const state = {
     active: false,
     openInNewTab: null,
     hints: [],
-    query: '',
-    matchingHint: null,
     renderCache: null,
     os: null,
 }
+
+const allowedChars = '1234567890qwertyuiopasdfghjklzxcvbnm'
+

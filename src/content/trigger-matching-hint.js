@@ -34,11 +34,9 @@ function shouldElementBeFocused(el) {
     )
 }
 
-function triggerMatchingHint() {
-    const { matchingHint: { targetEl }, openInNewTab } = state
-
-    if (shouldElementBeFocused(targetEl)) {
-        targetEl.focus()
+function triggerMatchingHint(hint) {
+    if (shouldElementBeFocused(hint.targetEl)) {
+        hint.targetEl.focus()
     } else {
         const isMac = state.os === 'mac'
 
@@ -46,11 +44,11 @@ function triggerMatchingHint() {
             view: window,
             bubbles: true,
             cancelable: true,
-            ctrlKey: openInNewTab && !isMac,
-            metaKey: openInNewTab && isMac,
+            ctrlKey: state.openInNewTab && !isMac,
+            metaKey: state.openInNewTab && isMac,
         })
 
-        targetEl.dispatchEvent(mouseEvent)
+        hint.targetEl.dispatchEvent(mouseEvent)
     }
 
     deactivateHintMode()

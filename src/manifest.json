@@ -28,7 +28,6 @@
       "js": [
         "bootstrap-state.js",
         "content/deactivate-hint-mode.js",
-        "content/filter-hints.js",
         "content/is-element-visible.js",
         "content/redraw-hints.js",
         "content/setup.js",
