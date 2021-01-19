@@ -46,8 +46,8 @@ function processOptions(options) {
     },
     newTabActivationShortcut: {
       key: 'F4',
-      shiftKey: false,
-      ctrlKey: true,
+      shiftKey: true,
+      ctrlKey: false,
       altKey: false,
       metaKey: false,
     },
