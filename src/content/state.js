@@ -15,5 +15,5 @@ const state = {
     os: null,
 }
 
-const allowedChars = '1234567890qwertyuiopasdfghjklzxcvbnm'
+const allowedChars = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
 

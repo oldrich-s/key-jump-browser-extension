@@ -14,10 +14,6 @@ function doesEventMatchShortcut(event, shortcut) {
     )
 }
 
-function eventHasModifierKey(event) {
-    return !!(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey)
-}
-
 function handleKeydown(event) {
     if (event.repeat) return
 
@@ -35,15 +31,13 @@ function handleKeydown(event) {
             state.active = true
             redrawHints()
         }
-    } else if (state.active && !eventHasModifierKey(event)) {
+    } else if (state.active) {
+        stopKeyboardEvent(event)
         if (event.key === 'Escape') {
-            stopKeyboardEvent(event)
             deactivateHintMode()
         } else if (allowedChars.includes(event.key)) {
-            stopKeyboardEvent(event)
             const hint = state.hints.find(hint => hint.id === event.key)
             if (hint) triggerMatchingHint(hint)
         }
-
     }
 }

@@ -72,12 +72,14 @@ function findHints() {
             '.gwt-Anchor',
         ].join(','),
     )
-    
+
     let hintId = 0
     for (const el of targetEls) {
-        if (!isElementVisible(el)) continue
-        state.hints.push({ id: allowedChars[hintId], targetEl: el })
-        hintId++
+        const id = allowedChars[hintId]
+        if (id && isElementVisible(el)) {
+            state.hints.push({ id, targetEl: el })
+            hintId++
+        }
     }
 }
 
