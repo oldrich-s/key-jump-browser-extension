@@ -27,10 +27,10 @@
       "run_at": "document_start",
       "js": [
         "bootstrap-state.js",
-        "content/activate-hint-mode.js",
         "content/deactivate-hint-mode.js",
         "content/filter-hints.js",
         "content/is-element-visible.js",
+        "content/redraw-hints.js",
         "content/setup.js",
         "content/state.js",
         "content/trigger-matching-hint.js",

@@ -85,17 +85,21 @@ function findHints() {
     }
 }
 
-function activateHintMode() {
+function redrawHints() {
+    if (!state.active) return
+
+    for (const { hintEl } of state.hints) {
+        hintEl.parentNode.removeChild(hintEl)
+    }
+
     findHints()
 
     if (!state.hints.length) return
-
     if (!state.renderCache) setupRendering()
 
     renderHints()
 
     if (state.query) filterHints()
-
-    state.active = true
+    
     state.renderCache.containerEl.classList.add(classNames.active)
 }

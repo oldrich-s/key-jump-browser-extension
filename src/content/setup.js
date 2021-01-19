@@ -74,7 +74,8 @@ function handleActivationKey(event, isNewTabActivationShortcut) {
         }
     } else {
         state.openInNewTab = isNewTabActivationShortcut
-        activateHintMode()
+        state.active = true
+        redrawHints()
     }
 }
 
