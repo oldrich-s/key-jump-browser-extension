@@ -38,14 +38,14 @@ function processOptions(options) {
   const defaultOptions = {
     optionsVersion: 1,
     activationShortcut: {
-      key: 'F4',
+      key: 'F1',
       shiftKey: false,
       ctrlKey: false,
       altKey: false,
       metaKey: false,
     },
     newTabActivationShortcut: {
-      key: 'F4',
+      key: 'F1',
       shiftKey: true,
       ctrlKey: false,
       altKey: false,
