@@ -7,8 +7,9 @@ function renderHints() {
     for (const hint of state.hints) {
         hint.hintEl = cache.hintSourceEl.cloneNode(true)
 
-        if (hint.id.toUpperCase() === hint.id) {
-            hint.hintEl.innerHTML = `<b style="color: black;">${hint.id}</b>`
+        const isUpperCase = /^[A-Z]+$/.test(hint.id)
+        if (isUpperCase) {
+            hint.hintEl.innerHTML = `<b style="color: black;">${hint.id}</b>`            
         } else {
             hint.hintEl.innerHTML = `<b style="color: white;">${hint.id}</b>`
         }
