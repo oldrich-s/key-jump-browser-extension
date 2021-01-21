@@ -6,7 +6,13 @@ function renderHints() {
 
     for (const hint of state.hints) {
         hint.hintEl = cache.hintSourceEl.cloneNode(true)
-        hint.hintEl.textContent = hint.id
+
+        if (hint.id.toUpperCase() === hint.id) {
+            hint.hintEl.innerHTML = `<b style="color: black;">${hint.id}</b>`
+        } else {
+            hint.hintEl.innerHTML = `<b style="color: white;">${hint.id}</b>`
+        }
+        
 
         fragment.appendChild(hint.hintEl)
 
@@ -65,7 +71,8 @@ function findHints() {
             '[contenteditable]:not([contenteditable=false]):not([disabled])',
             '[ng-click]:not([disabled])',
             '.gwt-Anchor',
-            '.mod-selectable'
+            '.mod-selectable',
+            '[role=button]'
         ].join(','),
     )
 
