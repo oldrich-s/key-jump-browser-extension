@@ -37,7 +37,7 @@ function handleKeydown(event) {
             deactivateHintMode()
         } else if (allowedChars.includes(event.key)) {
             const hint = state.hints.find(hint => hint.id === event.key)
-            if (hint) triggerMatchingHint(hint)
+            if (hint) triggerMatchingHint(hint, event.ctrlKey)
         }
     }
 }

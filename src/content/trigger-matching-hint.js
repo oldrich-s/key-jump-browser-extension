@@ -34,7 +34,7 @@ function shouldElementBeFocused(el) {
     )
 }
 
-function triggerMatchingHint(hint) {
+function triggerMatchingHint(hint, isNewTab) {
     if (shouldElementBeFocused(hint.targetEl)) {
         hint.targetEl.focus()
     } else {
@@ -44,8 +44,8 @@ function triggerMatchingHint(hint) {
             view: window,
             bubbles: true,
             cancelable: true,
-            ctrlKey: state.openInNewTab && !isMac,
-            metaKey: state.openInNewTab && isMac,
+            ctrlKey: (isNewTab || state.openInNewTab) && !isMac,
+            metaKey: (isNewTab || state.openInNewTab) && isMac,
         })
 
         hint.targetEl.dispatchEvent(mouseEvent)
