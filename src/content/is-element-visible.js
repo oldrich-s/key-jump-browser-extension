@@ -48,7 +48,7 @@ function isElementVisible(el) {
         if (
             // prettier-ignore
             styles.display === 'none' ||
-            styles.visibility === 'hidden' ||
+            //styles.visibility === 'hidden' ||
             styles.opacity === '0' ||
             (
                 (

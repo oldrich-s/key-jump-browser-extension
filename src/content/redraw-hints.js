@@ -61,21 +61,32 @@ function setupRendering() {
     cache.containerEl.removeChild(hintDimensionsEl)
 }
 
+const selectors = [
+    'a[href]',
+    'input:not([disabled]):not([type=hidden])',
+    'textarea:not([disabled])',
+    'select:not([disabled])',
+    'button:not([disabled])',
+    '[contenteditable]:not([contenteditable=false]):not([disabled])',
+    '[ng-click]:not([disabled])',
+    '.gwt-Anchor',
+    '.mod-selectable',
+    '[role=button]'
+]
+
+function getElsRec($parent) {
+    const $els = []
+    for (const $child of $parent.children) {
+        if (selectors.some(s => $child.matches(s))) $els.push($child)
+        if (!$child.matches('.no-hint-and-hit')) {
+            $els.push(...getElsRec($child))
+        }
+    }
+    return $els
+}
+
 function findHints() {
-    const targetEls = state.rootEl.querySelectorAll(
-        [
-            'a[href]',
-            'input:not([disabled]):not([type=hidden])',
-            'textarea:not([disabled])',
-            'select:not([disabled])',
-            'button:not([disabled])',
-            '[contenteditable]:not([contenteditable=false]):not([disabled])',
-            '[ng-click]:not([disabled])',
-            '.gwt-Anchor',
-            '.mod-selectable',
-            '[role=button]'
-        ].join(','),
-    )
+    const targetEls = getElsRec(state.rootEl)
 
     let hintId = 0
     for (const el of targetEls) {
